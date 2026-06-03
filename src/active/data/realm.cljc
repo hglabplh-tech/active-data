@@ -627,7 +627,7 @@ Here are the different forms:
   (let [cases (mapcat realm-records/function-realm-cases cases)]
     (realm-records/function-realm realm-records/function-realm-cases cases
                                   realm-records/metadata {}
-                                  realm-records/predicate fn?
+                                  realm-records/predicate (some-fn fn? ifn?)
                                   realm-records/description
                                   (if (= (count cases) 1)
                                     (function-case-description (first cases))
