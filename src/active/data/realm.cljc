@@ -12,8 +12,7 @@ i.e. in realm combinators and realm syntax."}
   (:require
    #?(:clj [clojure.core :as core]
       :cljs [cljs.core :as core])
-   #?(:clj [active.data.raw-record :refer [def-record is-a?]]
-      :cljs [active.data.raw-record :refer [is-a?] :refer-macros [def-record]])
+   [active.data.raw-record :refer [is-a?]]
    [active.data.struct :as struct]
    [active.data.raw-record :as record]
    [active.data.realm.internal.record-meta :as realm-record-meta]
@@ -46,6 +45,7 @@ i.e. in realm combinators and realm syntax."}
 (defn- real?
   "Returns true if n is a real number."
   [n]
+  ;; Note: true for ##Inf and ##NaN
   (number? n))
 
 #?(:clj (def rational
@@ -713,5 +713,5 @@ Here are the different forms:
       (struct->record-realm shorthand)
 
       :else
-      (throw (ex-info (str "unknown realm shorthand: " (pr-str shorthand))
+      (throw (ex-info (str "Unknown realm shorthand: " (pr-str shorthand))
                       {::unknown-realm-shorthand shorthand})))))
