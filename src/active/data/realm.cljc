@@ -291,8 +291,12 @@ The two-argument version can be called as follows:
        realm-records/metadata {}))))
 
 (defn union
-  [& realms]
-  (let [realms (map compile realms)]
+  "Creates a union realm of its arguments.
+
+  The returned realm contains the values that are contained
+  by any of the argument realms."
+  [r & realms]
+  (let [realms (map compile (cons r realms))]
     (realm-records/union-realm
      realm-records/description (str "union of " (realm-seq-description realms))
      realm-records/union-realm-realms realms
