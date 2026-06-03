@@ -39,24 +39,21 @@
   (is-a? from-predicate-realm thing))
 
 (re-export
-  realm-records/optional-realm
   realm-records/optional-realm-realm)
 
 (defn optional?
   [thing]
-  (is-a? optional-realm thing))
+  (is-a? realm-records/optional-realm thing))
 
 (re-export
-  realm-records/integer-from-to-realm
   realm-records/integer-from-to-realm-from
   realm-records/integer-from-to-realm-to)
 
 (defn integer-from-to?
   [thing]
-  (is-a? integer-from-to-realm thing))
+  (is-a? realm-records/integer-from-to-realm thing))
 
 (re-export
- realm-records/real-range-realm
  realm-records/real-range-realm-clusive-left
  realm-records/real-range-realm-left
  realm-records/real-range-realm-right
@@ -64,126 +61,113 @@
 
 (defn real-range?
   [thing]
-  (is-a? real-range-realm thing))
+  (is-a? realm-records/real-range-realm thing))
 
 (re-export
-  realm-records/union-realm
   realm-records/union-realm-realms)
 
 (defn union?
   [thing]
-  (is-a? union-realm thing))
+  (is-a? realm-records/union-realm thing))
 
 (re-export
-  realm-records/enum-realm
   realm-records/enum-realm-values)
 
 (defn enum?
   [thing]
-  (is-a? enum-realm thing))
+  (is-a? realm-records/enum-realm thing))
 
 (re-export
-  realm-records/intersection-realm
   realm-records/intersection-realm-realms)
 
 (defn intersection?
   [thing]
-  (is-a? intersection-realm thing))
+  (is-a? realm-records/intersection-realm thing))
 
 (re-export
-  realm-records/sequence-of-realm
   realm-records/sequence-of-realm-realm)
 
 (defn sequence-of?
   [thing]
-  (is-a? sequence-of-realm thing))
+  (is-a? realm-records/sequence-of-realm thing))
 
 (re-export
-  realm-records/set-of-realm
   realm-records/set-of-realm-realm)
 
 (defn set-of?
   [thing]
-  (is-a? set-of-realm thing))
+  (is-a? realm-records/set-of-realm thing))
 
 (re-export
-  realm-records/map-with-keys-realm
   realm-records/map-with-keys-realm-map)
 
 (defn map-with-keys?
   [thing]
-  (is-a? map-with-keys-realm thing))
+  (is-a? realm-records/map-with-keys-realm thing))
 
 (re-export
-  realm-records/map-of-realm
   realm-records/map-of-realm-key-realm
   realm-records/map-of-realm-value-realm)
 
 (defn map-of?
   [thing]
-  (is-a? map-of-realm thing))
+  (is-a? realm-records/map-of-realm thing))
 
 (re-export
-  realm-records/map-with-tag-realm
   realm-records/map-with-tag-realm-key
   realm-records/map-with-tag-realm-value)
 
 (defn map-with-tag?
   [thing]
-  (is-a? map-with-tag-realm thing))
+  (is-a? realm-records/map-with-tag-realm thing))
 
 (re-export
-  realm-records/tuple-realm
   realm-records/tuple-realm-realms)
 
 (defn tuple?
   [thing]
-  (is-a? tuple-realm thing))
+  (is-a? realm-records/tuple-realm thing))
 
 (re-export
-  realm-records/record-realm-field
+  ;; realm-records/record-realm-field
   realm-records/record-realm-field-name
   realm-records/record-realm-field-realm
   realm-records/record-realm-field-getter
 
-  realm-records/record-realm
   realm-records/record-realm-name
   realm-records/record-realm-constructor
   realm-records/record-realm-fields)
 
 (defn record?
   [thing]
-  (is-a? record-realm thing))
+  (is-a? realm-records/record-realm thing))
 
 (re-export
-  realm-records/function-case
+  ;; realm-records/function-case
   realm-records/function-case-positional-argument-realms
   realm-records/function-case-optional-arguments-realm
   realm-records/function-case-return-realm
 
-  realm-records/function-realm
   realm-records/function-realm-cases)
 
 (defn function?
   [thing]
-  (is-a? function-realm thing))
+  (is-a? realm-records/function-realm thing))
 
 (re-export
- realm-records/delayed-realm
  realm-records/delayed-realm-delay)
 
 (defn delayed?
   [thing]
-  (is-a? delayed-realm thing))
+  (is-a? realm-records/delayed-realm thing))
 
 (re-export
-  realm-records/named-realm
   realm-records/named-realm-name
   realm-records/named-realm-realm)
 
 (defn named?
   [thing]
-  (is-a? named-realm thing))
+  (is-a? realm-records/named-realm thing))
 
 ;; Realms of realms
 
