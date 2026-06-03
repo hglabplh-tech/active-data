@@ -1,10 +1,10 @@
 (ns ^{:doc "Predicates, selectors, and realms for processing realm values as input."}
   active.data.realm.inspection
-  (:refer-clojure :exclude [record? char keyword symbol boolean uuid])
+  (:refer-clojure :exclude [record? char keyword symbol boolean uuid
+                            rational? number? char? keyword? symbol? string? boolean? uuid? any?])
   (:require [active.data.realm.internal.records :as realm-records]
             [active.data.realm :as realm]
-            #?(:clj [active.data.raw-record :refer [def-record is-a?]]
-               :cljs [active.data.raw-record :refer [is-a?] :refer-macros [def-record]])
+            [active.data.raw-record :refer [is-a?]]
             #?(:clj [active.data.internal.export :refer [re-export]]
                :cljs [active.data.internal.export :refer-macros [re-export]])))
 
@@ -17,13 +17,20 @@
  realm-records/predicate
  realm-records/metadata)
 
-(re-export
-  realm-records/builtin-scalar-realm
-  realm-records/builtin-scalar-realm-id)
+(defn- builtin-scalar-pred [id]
+  (fn [thing]
+    (and (is-a? realm-records/builtin-scalar-realm thing)
+         (= id (realm-records/builtin-scalar-realm-id thing)))))
 
-(defn builtin-scalar?
-  [thing]
-  (is-a? builtin-scalar-realm thing))
+(def rational? (builtin-scalar-pred :rational))
+(def number? (builtin-scalar-pred :number))
+(def char? (builtin-scalar-pred :char))
+(def keyword? (builtin-scalar-pred :keyword))
+(def symbol? (builtin-scalar-pred :symbol))
+(def string? (builtin-scalar-pred :string))
+(def boolean? (builtin-scalar-pred :boolean))
+(def uuid? (builtin-scalar-pred :uuid))
+(def any? (builtin-scalar-pred :any))
 
 (re-export realm-records/from-predicate-realm)
 
@@ -178,8 +185,7 @@
   [thing]
   (is-a? named-realm thing))
 
-; questionable
-(def builtin-scalar (realm/record->record-realm realm-records/builtin-scalar-realm))
+;; Realms of realms
 
 (defn- the-builtin-scalar [realm]
   ;; Note: using (enum realm) would work usually, but not when metadata are added to the base value.
@@ -192,14 +198,14 @@
                                  (= (realm-records/builtin-scalar-realm-id r)
                                     this-id))))))
 
-#?(:clj (def ^{:doc "Realm containg the rational realm."} rational (the-builtin-scalar realm/rational)))
-(def ^{:doc "Realm containg the number realm."} number (the-builtin-scalar realm/number))
-(def ^{:doc "Realm containg the char realm."} char (the-builtin-scalar realm/char))
-(def ^{:doc "Realm containg the keyword realm."} keyword (the-builtin-scalar realm/keyword))
-(def ^{:doc "Realm containg the symbol realm."} symbol (the-builtin-scalar realm/symbol))
-(def ^{:doc "Realm containg the string realm."} string (the-builtin-scalar realm/string))
-(def ^{:doc "Realm containg the boolean realm."} boolean (the-builtin-scalar realm/boolean))
-(def ^{:doc "Realm containg the uuid realm."} uuid (the-builtin-scalar realm/uuid))
+#?(:clj (def ^{:doc "Realm containing the rational realm."} rational (the-builtin-scalar realm/rational)))
+(def ^{:doc "Realm containing the number realm."} number (the-builtin-scalar realm/number))
+(def ^{:doc "Realm containing the char realm."} char (the-builtin-scalar realm/char))
+(def ^{:doc "Realm containing the keyword realm."} keyword (the-builtin-scalar realm/keyword))
+(def ^{:doc "Realm containing the symbol realm."} symbol (the-builtin-scalar realm/symbol))
+(def ^{:doc "Realm containing the string realm."} string (the-builtin-scalar realm/string))
+(def ^{:doc "Realm containing the boolean realm."} boolean (the-builtin-scalar realm/boolean))
+(def ^{:doc "Realm containing the uuid realm."} uuid (the-builtin-scalar realm/uuid))
 (def ^{:doc "Realm containing the any realm."} any (the-builtin-scalar realm/any))
 
 (def ^{:doc "Realm containing predicate realms."}
@@ -281,4 +287,3 @@
    function
    delayed
    named))
-   
