@@ -274,18 +274,21 @@ The two-argument version can be called as follows:
 
 (declare compile)
 
-(defn ^{:doc ""}
-  optional
+(defn optional
+  "Returns a realm that contains the values of the given realm, and `nil`."
   [realm]
   (let [realm (compile realm)]
-    (realm-records/optional-realm
-     realm-records/description (str "optional " (realm-records/description realm))
-     realm-records/predicate (let [inner-predicate (realm-records/predicate realm)]
-                               (fn [x]
-                                 (or (nil? x)
-                                     (inner-predicate x))))
-     realm-records/optional-realm-realm realm
-     realm-records/metadata {})))
+    (if (is-a? realm-records/optional-realm realm)
+      ;; (optional x) == (optional (optional x))
+      realm
+      (realm-records/optional-realm
+       realm-records/description (str "optional " (realm-records/description realm))
+       realm-records/predicate (let [inner-predicate (realm-records/predicate realm)]
+                                 (fn [x]
+                                   (or (nil? x)
+                                       (inner-predicate x))))
+       realm-records/optional-realm-realm realm
+       realm-records/metadata {}))))
 
 (defn union
   [& realms]
