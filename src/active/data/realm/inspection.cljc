@@ -148,6 +148,11 @@
   [thing]
   (is-a? record-realm thing))
 
+(defn record-field?
+  [thing]
+  (is-a? record-realm-field thing))
+
+
 (re-export
   realm-records/function-case
   realm-records/function-case-positional-argument-realms
@@ -160,6 +165,11 @@
 (defn function?
   [thing]
   (is-a? function-realm thing))
+
+(defn function-case?                                        ;; attention this is no realm it is something like a set of
+  [thing]
+  (is-a? function-case thing))
+
 
 (re-export
  realm-records/delayed-realm
