@@ -209,16 +209,25 @@ Starting with the project I missed a shorthand explanation how to define realms 
    op1 :- realm/number
    op2 :- realm/number]
   )
-(realm/restricted)
 (defn plus :- realm/number
   [op1 :- realm/number
    op2 :- realm/number]
   (+ op1 op2))
 (function-fun plus 9.8 7.7)
 ```
-
-## REALM restrict
+## REALM regex
 
 ```clojure
 
+```
+## REALM restrict
+
+```clojure
+(ns testit
+  (:require [clojure.string :as string] ))
+(def suffix-pdf (realm/restricted realm/string (fn [val]
+                                 (string/ends-with? val ".pdf"))))
+(defn suffix-test :- realm/boolean 
+  [value :- suffix-pdf]
+  (println value))
 ```

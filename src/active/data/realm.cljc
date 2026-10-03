@@ -658,13 +658,13 @@ Here are the different forms:
 
   This realm is used to define a string? restricted to a specific regex expression"}
 
-   [regex-string]
-  (realm-records/regex-realm  realm-records/regex-string regex-string
+   [regex-expression]
+  (realm-records/regex-realm  realm-records/regex-expression regex-expression
                               realm-records/metadata {}
                               realm-records/predicate (clojure.core/fn  [str-to-check]
                                                         (and (string? str-to-check)
-                                                        (re-matches (re-pattern regex-string) str-to-check)))
-                              realm-records/description (str "regex-string: " regex-string)))
+                                                        (re-matches (re-pattern regex-expression) str-to-check)))
+                              realm-records/description (str "regex-string: " regex-expression)))
 
 (defn restricted
   "Restrict a realm with a predicate.

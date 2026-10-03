@@ -110,7 +110,7 @@
 (def-record ^{:doc "realm for regex strings."}
             regex-realm
             :extends realm
-            [regex-string])
+            [regex-expression])
 
 (def-record ^{:doc "Function case."}
   function-case
