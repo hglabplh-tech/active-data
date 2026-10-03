@@ -4,7 +4,7 @@
             [active.data.struct :as struct #?@(:cljs [:include-macros true])]
             [active.data.raw-record :as record #?@(:cljs [:include-macros true])]
             #?(:cljs [cljs.test :refer-macros (is deftest testing)])
-            #?(:clj [clojure.test :refer (is deftest testing)])))
+            #?(:clj [clojure.test :refer (is deftest testing run-tests)])))
 
 (deftest sequence-of-test
   (is (realm-inspection/sequence-of?
@@ -30,6 +30,10 @@
 (deftest tuple-test
   (is (realm-inspection/tuple?
        (realm/compile [realm/integer realm/real]))))
+
+(deftest regex-test
+  (is (realm-inspection/regex?
+        (realm/regex #"\p{XDigit}+"))))
 
 (deftest function-test
   (is (realm-inspection/function?
@@ -138,6 +142,8 @@
          (realm-inspection/description (realm/named :a realm/integer))))
   (is (= "string restricted to nonempty strings"
          (realm-inspection/description nonempty-string-realm))))
+  (is (= (str  "regex-string: " #"\p{XDigit}+")
+        (realm-inspection/description (realm/regex #"\p{XDigit}+"))))
 
 
 (deftest predicate-test
@@ -281,7 +287,7 @@
   (is (not ((realm-inspection/predicate nonempty-string-realm) "")))
   (is (not ((realm-inspection/predicate nonempty-string-realm) 5)))
 
-  (is ((realm-inspection/predicate (realm/regex-str #"\p{XDigit}+")) "deadbeef"))
-  (is  (not ((realm-inspection/predicate (realm/regex-str #"\p{XDigit}+")) "klpom----++++")))
+  (is ((realm-inspection/predicate (realm/regex #"\p{XDigit}+")) "deadbeef"))
+  (is  (not ((realm-inspection/predicate (realm/regex #"\p{XDigit}+")) "klpom----++++")))
 
   )

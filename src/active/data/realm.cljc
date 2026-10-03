@@ -653,7 +653,7 @@ Here are the different forms:
                                realm-records/predicate (realm-records/predicate realm)
                                realm-records/description (str "realm named " name ": " (realm-records/description realm)))))
 
-(defn regex-str
+(defn regex
   ^{:doc "Make a realm for a regex string  predicate.
 
   This realm is used to define a string? restricted to a specific regex expression"}
