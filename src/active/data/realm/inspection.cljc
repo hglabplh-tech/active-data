@@ -188,6 +188,14 @@
   [thing]
   (is-a? named-realm thing))
 
+(re-export realm-records/regex-realm
+           realm-records/regex-string)
+
+(defn regex?
+  [thing]
+  (is-a? regex-realm thing))
+
+
 ; questionable
 (def builtin-scalar (realm/record->record-realm realm-records/builtin-scalar-realm))
 
@@ -263,6 +271,9 @@
 (def ^{:doc "Realm containing named realms."}
   named
   (realm/record->record-realm realm-records/named-realm))
+(def ^{:doc "Realm containing regex realms."}
+  regex
+  (realm/record->record-realm realm-records/regex-realm))
 
 (def ^{:doc "Realm containing all realms"} realm
   (realm/union
@@ -290,5 +301,6 @@
    record
    function
    delayed
-   named))
-   
+   named
+   regex))
+

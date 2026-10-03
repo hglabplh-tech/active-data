@@ -107,6 +107,11 @@
    record-realm-constructor
    record-realm-fields])
 
+(def-record ^{:doc "realm for regex strings."}
+            regex-realm
+            :extends realm
+            [regex-string])
+
 (def-record ^{:doc "Function case."}
   function-case
   [function-case-positional-argument-realms ; seq of realms

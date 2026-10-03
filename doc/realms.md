@@ -25,3 +25,6 @@ the design-recipes-style development that we favor.  (For some
 background on our motivation, see [this
 video](https://www.youtube.com/watch?v=MVThzZf-tJ4&t=778s).)
 
+### A reference link o see the practical usage
+[REALM examples](./realm-types-defs.md)
+

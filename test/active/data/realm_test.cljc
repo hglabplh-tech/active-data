@@ -280,5 +280,8 @@
   (is ((realm-inspection/predicate nonempty-string-realm) "foo"))
   (is (not ((realm-inspection/predicate nonempty-string-realm) "")))
   (is (not ((realm-inspection/predicate nonempty-string-realm) 5)))
-  
+
+  (is ((realm-inspection/predicate (realm/regex-str #"\p{XDigit}+")) "deadbeef"))
+  (is  (not ((realm-inspection/predicate (realm/regex-str #"\p{XDigit}+")) "klpom----++++")))
+
   )

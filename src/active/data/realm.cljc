@@ -653,6 +653,19 @@ Here are the different forms:
                                realm-records/predicate (realm-records/predicate realm)
                                realm-records/description (str "realm named " name ": " (realm-records/description realm)))))
 
+(defn regex-str
+  ^{:doc "Make a realm for a regex string  predicate.
+
+  This realm is used to define a string? restricted to a specific regex expression"}
+
+   [regex-string]
+  (realm-records/regex-realm  realm-records/regex-string regex-string
+                              realm-records/metadata {}
+                              realm-records/predicate (clojure.core/fn  [str-to-check]
+                                                        (and (string? str-to-check)
+                                                        (re-matches (re-pattern regex-string) str-to-check)))
+                              realm-records/description (str "regex-string: " regex-string)))
+
 (defn restricted
   "Restrict a realm with a predicate.
 
