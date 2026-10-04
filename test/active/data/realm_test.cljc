@@ -79,6 +79,10 @@
                       (> (count s) 0))
                     "nonempty strings"))
 
+(deftest optional-test
+  (let [x (realm/optional realm/integer)]
+    (is (= x (realm/optional x)))))
+
 (deftest description-test
   (is (= "optional integer"
          (realm-inspection/description (realm/optional realm/integer))))
