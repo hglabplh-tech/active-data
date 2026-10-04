@@ -126,6 +126,11 @@
    realm-inspection/enum
    (apply schema/enum (realm-inspection/enum-realm-values realm))
 
+   realm-inspection/regex
+   (schema/pred (realm-inspection/predicate realm)
+                (realm-inspection/description realm))
+
+
    realm-inspection/sequence-of
    [(schema (realm-inspection/sequence-of-realm-realm realm))]
 

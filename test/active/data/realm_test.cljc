@@ -142,7 +142,7 @@
          (realm-inspection/description (realm/named :a realm/integer))))
   (is (= "string restricted to nonempty strings"
          (realm-inspection/description nonempty-string-realm))))
-  (is (= (str  "regex-string: " #"\p{XDigit}+")
+  (is (= (str  "regular-expression: " #"\p{XDigit}+")
         (realm-inspection/description (realm/regex #"\p{XDigit}+"))))
 
 

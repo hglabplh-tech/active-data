@@ -189,7 +189,7 @@
   (is-a? named-realm thing))
 
 (re-export realm-records/regex-realm
-           realm-records/regex-expression)
+           realm-records/regular-expression)
 
 (defn regex?
   [thing]
