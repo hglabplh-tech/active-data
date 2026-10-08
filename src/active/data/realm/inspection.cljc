@@ -25,9 +25,12 @@
   [thing]
   (is-a? builtin-scalar-realm thing))
 
-(re-export realm-records/from-predicate-realm)
+(re-export
+   realm-records/from-predicate-realm
+   realm-records/pred-key
+   realm-records/pred-base-realm)
 
-(defn from-predicate?
+ (defn from-predicate?
   [thing]
   (is-a? from-predicate-realm thing))
 
@@ -148,11 +151,6 @@
   [thing]
   (is-a? record-realm thing))
 
-(defn record-field?
-  [thing]
-  (is-a? record-realm-field thing))
-
-
 (re-export
   realm-records/function-case
   realm-records/function-case-positional-argument-realms
@@ -191,9 +189,24 @@
 (re-export realm-records/regex-realm
            realm-records/regular-expression)
 
+(re-export
+  realm-records/java-type-realm
+  realm-records/type-realm-qualified)
+
+
 (defn regex?
-  [thing]
-  (is-a? regex-realm thing))
+           [thing]
+           (is-a? regex-realm thing))
+
+#?(:clj
+   (defn java-type?
+     [thing]
+     (is-a? java-type-realm thing)))
+
+(re-export
+        realm-records/from-predicate-realm
+        realm-records/pred-key
+        realm-records/pred-base-realm)
 
 
 ; questionable
@@ -204,7 +217,9 @@
   ;; That's why we need a predicate that checks if it's also a builting-scalar-realm and with the same id.
   (assert (is-a? realm-records/builtin-scalar-realm realm))
   (let [this-id (realm-records/builtin-scalar-realm-id realm)]
-    (realm/from-predicate (realm-records/description realm)
+    (realm/from-predicate :scalar
+                          realm
+                          (realm-records/description realm)
                           (fn [r]
                             (and (is-a? realm-records/builtin-scalar-realm r)
                                  (= (realm-records/builtin-scalar-realm-id r)
@@ -274,6 +289,10 @@
 (def ^{:doc "Realm containing regex realms."}
   regex
   (realm/record->record-realm realm-records/regex-realm))
+#?(:clj (def ^{:doc "Realm asking for java type."}
+     java-type
+     (realm/record->record-realm realm-records/java-type-realm)))
+
 
 (def ^{:doc "Realm containing all realms"} realm
   (realm/union
@@ -302,5 +321,6 @@
    function
    delayed
    named
-   regex))
+   #?(:clj regex)
+   #?(:clj java-type)))
 

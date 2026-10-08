@@ -302,3 +302,17 @@
     (is (thrown? #?(:clj Exception :cljs js/Error) (schema/validate s3 5)))
     (is (thrown? #?(:clj Exception :cljs js/Error) (schema/validate s4 5)))
     (is (thrown? #?(:clj Exception :cljs js/Error) (schema/validate s5 5)))))
+
+(deftest regexp-test
+  (let [hex-digit-schema (schema (realm/regex #"\p{XDigit}+"))
+        email-schema  (schema (realm/regex #"^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$"))
+        ipv4-schema (schema (realm/regex #"^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$"))
+        ]
+    (is (some? (schema/validate hex-digit-schema "ACDEFbcda567832")))
+    (is (some? (schema/validate email-schema "blobber@torrolab.com")))
+    (is (some? (schema/validate ipv4-schema  "127.0.0.1")))
+    (is (thrown? #?(:clj Exception :cljs js/Error) (schema/validate hex-digit-schema  "AB67980CDEFTZ")))
+    (is (thrown? #?(:clj Exception :cljs js/Error) (schema/validate email-schema "blobber!@torrolab??.com")))
+    (is (thrown? #?(:clj Exception :cljs js/Error) (schema/validate ipv4-schema "259.678.122.555")))
+    )
+  )

@@ -24,7 +24,8 @@
 (def-record ^{:doc "realm only defined through a predicate."}
   from-predicate-realm
   :extends realm
-  [])
+  [pred-key
+   pred-base-realm])
 
 (def-record ^{:doc "realm of optional values."}
   optional-realm
@@ -107,7 +108,7 @@
    record-realm-constructor
    record-realm-fields])
 
-(def-record ^{:doc "realm for regex strings."}
+(def-record ^{:doc "realm for regular expressions ."}
             regex-realm
             :extends realm
             [regular-expression])
@@ -134,6 +135,11 @@
   :extends realm
   [named-realm-name ; keyword
    named-realm-realm])
+
+(def-record ^{:doc "Specific Java class realm."}
+    java-type-realm
+            :extends realm
+            [type-realm-qualified])
 
 
 

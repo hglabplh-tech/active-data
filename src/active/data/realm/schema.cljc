@@ -126,9 +126,14 @@
    realm-inspection/enum
    (apply schema/enum (realm-inspection/enum-realm-values realm))
 
-   realm-inspection/regex
+
+      realm-inspection/regex
    (schema/pred (realm-inspection/predicate realm)
                 (realm-inspection/description realm))
+ #?(:clj
+      realm-inspection/java-type
+      (schema/pred  (realm-inspection/predicate realm)
+                    (realm-inspection/description realm)))
 
 
    realm-inspection/sequence-of

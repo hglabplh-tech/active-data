@@ -81,7 +81,7 @@
 
 (deftest optional-test
   (let [x (realm/optional realm/integer)]
-    (is (= x (realm/optional x)))))
+    (is (realm-inspection/optional? x) )))
 
 (deftest description-test
   (is (= "optional integer"
@@ -293,5 +293,10 @@
 
   (is ((realm-inspection/predicate (realm/regex #"\p{XDigit}+")) "deadbeef"))
   (is  (not ((realm-inspection/predicate (realm/regex #"\p{XDigit}+")) "klpom----++++")))
-
+  #?(:clj
+     (println "class type test no 3 executed")
+     (is ((realm-inspection/predicate (realm/java-type-realm java.util.UUID)) java.util.UUID))
+     (is  (not ((realm-inspection/predicate (realm/java-type-realm java.util.Date)) java.util.UUID)))
+     (is ((realm-inspection/predicate (realm/java-type-realm java.util.UUID)) (java.util.UUID/randomUUID)))
+     (is  (not ((realm-inspection/predicate (realm/java-type-realm java.util.Date)) (java.util.UUID/randomUUID)))))
   )

@@ -110,9 +110,11 @@ i.e. in realm combinators and realm syntax."}
 Don't use this if you don't have to, as the predicate is by its
 nature opaque and not suitable for e.g. generation."}
   from-predicate
-  [desc pred]
+  [pred-key realm desc pred]
   (realm-records/from-predicate-realm realm-records/description desc
                                       realm-records/predicate pred
+                                      realm-records/pred-key pred-key
+                                      realm-records/pred-base-realm realm
                                       realm-records/metadata {}))
 
 (def ^{:doc "Realm containing all integers."}
@@ -654,6 +656,20 @@ Here are the different forms:
                                realm-records/predicate (realm-records/predicate realm)
                                realm-records/description (str "realm named " name ": " (realm-records/description realm)))))
 
+#?(:clj
+(defn java-type-realm
+  "Java class type realm.
+
+  This realm checks if the parrameter has the type of a sppecific mostly user-defined class"
+  [clazz]
+    (realm-records/java-type-realm realm-records/type-realm-qualified clazz
+                               realm-records/metadata {}
+                               realm-records/predicate (fn [this-class-obj]
+                                                         (if (instance? Object this-class-obj)
+                                                           (instance? clazz this-class-obj)
+                                                           (= this-class-obj clazz)))
+                               realm-records/description (str "java type to check for " clazz))))
+
 (defn regex
   ^{:doc "Make a realm for a regex string  predicate.
 
@@ -667,6 +683,7 @@ Here are the different forms:
                                                         (re-matches (re-pattern regex-expression) str-to-check)))
                               realm-records/description (str "regular-expression: " regex-expression)))
 
+
 (defn restricted
   "Restrict a realm with a predicate.
 
@@ -674,9 +691,9 @@ Here are the different forms:
   realm for which `pred` (a unary function) returns a true value.
 
   Only use this if you have to, as it forfeits inspectability."  
-  [realm pred predicate-description]
+  [pred-key realm pred predicate-description]
   (intersection realm
-                (from-predicate predicate-description
+                (from-predicate pred-key realm predicate-description
                                 pred)))
 
 (defn compile

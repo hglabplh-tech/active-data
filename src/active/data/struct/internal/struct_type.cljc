@@ -97,6 +97,7 @@
       [Object
        (equiv [this other] (-equiv this other))
 
+
        IWithMeta
        (-with-meta [this meta] (StructType. keys keyset index-map variant validator meta))
        IMeta
