@@ -1,6 +1,7 @@
 (ns active.data.realm-test
   (:require [active.data.realm :as realm #?@(:cljs [:include-macros true])]
             [active.data.realm.inspection :as realm-inspection]
+            [active.data.realm.restrict-util :as ru]
             [active.data.struct :as struct #?@(:cljs [:include-macros true])]
             [active.data.raw-record :as record #?@(:cljs [:include-macros true])]
             #?(:cljs [cljs.test :refer-macros (is deftest testing)])
@@ -74,7 +75,7 @@
 (record/def-record Rare [rar rdr])
 
 (def nonempty-string-realm
-  (realm/restricted realm/string
+  (realm/restricted :non-empty-string realm/string
                     (fn [s]
                       (> (count s) 0))
                     "nonempty strings"))
@@ -149,7 +150,6 @@
   (is (= (str  "regular-expression: " #"\p{XDigit}+")
         (realm-inspection/description (realm/regex #"\p{XDigit}+"))))
 
-
 (deftest predicate-test
   (is ((realm-inspection/predicate realm/integer) 5))
   (is (not ((realm-inspection/predicate realm/integer) "5")))
@@ -166,8 +166,8 @@
 
   (is ((realm-inspection/predicate realm/any) "string"))
 
-  (is ((realm-inspection/predicate (realm/from-predicate "ints" int?)) 5))
-  (is (not ((realm-inspection/predicate (realm/from-predicate "ints" int?)) "5")))
+  (is ((realm-inspection/predicate (realm/from-predicate :pos-test realm/integer "ints" int?)) 5))
+  (is (not ((realm-inspection/predicate (realm/from-predicate :neg-test realm/integer "ints" int?)) "5")))
 
   (is ((realm-inspection/predicate (realm/optional realm/integer)) 5))
   (is ((realm-inspection/predicate (realm/optional realm/integer)) nil))
@@ -291,12 +291,13 @@
   (is (not ((realm-inspection/predicate nonempty-string-realm) "")))
   (is (not ((realm-inspection/predicate nonempty-string-realm) 5)))
 
-  (is ((realm-inspection/predicate (realm/regex #"\p{XDigit}+")) "deadbeef"))
-  (is  (not ((realm-inspection/predicate (realm/regex #"\p{XDigit}+")) "klpom----++++")))
-  #?(:clj
-     (println "class type test no 3 executed")
-     (is ((realm-inspection/predicate (realm/java-type-realm java.util.UUID)) java.util.UUID))
-     (is  (not ((realm-inspection/predicate (realm/java-type-realm java.util.Date)) java.util.UUID)))
-     (is ((realm-inspection/predicate (realm/java-type-realm java.util.UUID)) (java.util.UUID/randomUUID)))
-     (is  (not ((realm-inspection/predicate (realm/java-type-realm java.util.Date)) (java.util.UUID/randomUUID)))))
+  ;; this is questionable
+  ;; (is ((realm-inspection/predicate (realm/regex hex-regexp)) "deadbeef"))
+  ;;(is (not ((realm-inspection/predicate (realm/regex hex-regexp)) "klpom----++++")))
+  (is ((realm-inspection/predicate ru/hex-check) "dabdef6754"))
+  (is ((realm-inspection/predicate ru/email-check) "hugo.boss@fashion.com"))
+  (is (not ((realm-inspection/predicate ru/hex-check) "dabdef6754ztuj")))
+  (is (not ((realm-inspection/predicate ru/email-check) "hugo.boss\"!!@fashion.com")))
+  (is ((realm-inspection/predicate ru/uuid-type-check) (java.util.UUID/randomUUID)))
+  (is (not ((realm-inspection/predicate ru/date-type-check) (java.util.UUID/randomUUID))))
   )

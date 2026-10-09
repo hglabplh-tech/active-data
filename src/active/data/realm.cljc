@@ -20,6 +20,7 @@ i.e. in realm combinators and realm syntax."}
    [active.data.realm.internal.records :as realm-records]
    [clojure.string :as string]))
 
+(declare compile)
 (defn contains?
   "Does a realm contain a value?
   
@@ -111,11 +112,13 @@ Don't use this if you don't have to, as the predicate is by its
 nature opaque and not suitable for e.g. generation."}
   from-predicate
   [pred-key realm desc pred]
+  (let [comp-realm (compile realm)]
   (realm-records/from-predicate-realm realm-records/description desc
-                                      realm-records/predicate pred
+                                      realm-records/predicate (fn [value]
+                                                                  (pred value))
                                       realm-records/pred-key pred-key
                                       realm-records/pred-base-realm realm
-                                      realm-records/metadata {}))
+                                      realm-records/metadata {})))
 
 (def ^{:doc "Realm containing all integers."}
   integer
@@ -277,7 +280,7 @@ The two-argument version can be called as follows:
 
 (declare compile)
 
-(defn ^{:doc ""}
+(defn ^{:doc "defines a optional realm the value can be nil or any other value"}
   optional
   [realm]
   (let [realm (compile realm)]
