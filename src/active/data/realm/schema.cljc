@@ -130,11 +130,6 @@
       realm-inspection/regex
    (schema/pred (realm-inspection/predicate realm)
                 (realm-inspection/description realm))
- #?(:clj
-      realm-inspection/java-type
-      (schema/pred  (realm-inspection/predicate realm)
-                    (realm-inspection/description realm)))
-
 
    realm-inspection/sequence-of
    [(schema (realm-inspection/sequence-of-realm-realm realm))]
@@ -172,4 +167,8 @@
        (schema/make-fn-schema (fn-output-schema cases)
                               (map fn-input-schema cases))
        (catch #?(:clj RuntimeException :cljs js/Error) e
-         generic-function-schema)))))
+         generic-function-schema)))
+
+   realm-inspection/java-type
+   (schema/pred  (realm-inspection/predicate realm)
+                 (realm-inspection/description realm))))
