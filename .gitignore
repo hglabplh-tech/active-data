@@ -17,3 +17,7 @@ out
 resources/clj-kondo.exports/de.active-group/active-data/.cache
 .clj-kondo
 .lsp
+/.idea
+*.iml
+*.diff
+.DS_Store
